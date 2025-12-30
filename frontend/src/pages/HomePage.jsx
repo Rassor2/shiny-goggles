@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import { siteConfig, categories, featuredArticles, articles } from '../data/mock';
 import { Button } from '../components/ui/button';
 import { Card, CardContent } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
-import { ArrowRight, Flame, Wallet, Home, Zap, Sun, FileText, Clock, ChevronRight, Leaf, TrendingDown, Shield } from 'lucide-react';
+import { ArrowRight, Flame, Wallet, Home, Zap, Sun, FileText, Clock, ChevronRight, Leaf, TrendingDown, Shield, Loader2, CheckCircle } from 'lucide-react';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
 
 const iconMap = {
   Flame: Flame,
