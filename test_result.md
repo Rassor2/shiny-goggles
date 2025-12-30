@@ -138,11 +138,14 @@ backend:
     file: "server.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "POST /api/newsletter/subscribe endpoint with duplicate check, tested via curl"
+      - working: true
+        agent: "testing"
+        comment: "Comprehensive testing completed: ✅ Valid email subscriptions work correctly with MongoDB storage ✅ Duplicate subscription handling working (returns 400 error with proper message) ✅ Email validation working (rejects invalid emails with 422) ✅ Unsubscribe functionality working (sets active=false) ✅ Unsubscribe handles non-existent emails correctly (404 error). All newsletter functionality working perfectly."
 
 frontend:
   - task: "Homepage with hero, stats, featured articles, categories, newsletter"
