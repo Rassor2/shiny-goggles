@@ -21,6 +21,29 @@ const iconMap = {
 
 const HomePage = () => {
   const recentArticles = articles.slice(0, 6);
+  const [email, setEmail] = useState('');
+  const [subscribeStatus, setSubscribeStatus] = useState('idle'); // idle, loading, success, error
+  const [subscribeMessage, setSubscribeMessage] = useState('');
+
+  const handleNewsletterSubmit = async (e) => {
+    e.preventDefault();
+    setSubscribeStatus('loading');
+    setSubscribeMessage('');
+    
+    try {
+      await axios.post(`${API}/newsletter/subscribe`, { email });
+      setSubscribeStatus('success');
+      setSubscribeMessage('Successfully subscribed!');
+      setEmail('');
+    } catch (err) {
+      setSubscribeStatus('error');
+      if (err.response?.data?.detail === 'Email already subscribed') {
+        setSubscribeMessage('This email is already subscribed.');
+      } else {
+        setSubscribeMessage('Failed to subscribe. Please try again.');
+      }
+    }
+  };
 
   return (
     <div className="min-h-screen">
