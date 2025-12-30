@@ -100,6 +100,79 @@ async def get_status_checks():
     
     return status_checks
 
+
+# Contact Form Endpoints
+@api_router.post("/contact", response_model=ContactMessage)
+async def submit_contact_form(input: ContactMessageCreate):
+    """Submit a contact form message"""
+    contact_obj = ContactMessage(
+        name=input.name,
+        email=input.email,
+        subject=input.subject,
+        message=input.message
+    )
+    
+    doc = contact_obj.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    
+    await db.contact_messages.insert_one(doc)
+    logger.info(f"Contact form submitted by {input.email}")
+    
+    return contact_obj
+
+@api_router.get("/contact", response_model=List[ContactMessage])
+async def get_contact_messages():
+    """Get all contact form submissions (admin endpoint)"""
+    messages = await db.contact_messages.find({}, {"_id": 0}).to_list(1000)
+    
+    for msg in messages:
+        if isinstance(msg.get('created_at'), str):
+            msg['created_at'] = datetime.fromisoformat(msg['created_at'])
+    
+    return messages
+
+
+# Newsletter Subscription Endpoints
+@api_router.post("/newsletter/subscribe", response_model=NewsletterSubscription)
+async def subscribe_newsletter(input: NewsletterSubscribe):
+    """Subscribe to newsletter"""
+    # Check if already subscribed
+    existing = await db.newsletter_subscriptions.find_one({"email": input.email})
+    if existing:
+        if existing.get('active', True):
+            raise HTTPException(status_code=400, detail="Email already subscribed")
+        else:
+            # Reactivate subscription
+            await db.newsletter_subscriptions.update_one(
+                {"email": input.email},
+                {"$set": {"active": True, "subscribed_at": datetime.now(timezone.utc).isoformat()}}
+            )
+            existing['active'] = True
+            return NewsletterSubscription(**existing)
+    
+    subscription = NewsletterSubscription(email=input.email)
+    doc = subscription.model_dump()
+    doc['subscribed_at'] = doc['subscribed_at'].isoformat()
+    
+    await db.newsletter_subscriptions.insert_one(doc)
+    logger.info(f"Newsletter subscription: {input.email}")
+    
+    return subscription
+
+@api_router.post("/newsletter/unsubscribe")
+async def unsubscribe_newsletter(input: NewsletterSubscribe):
+    """Unsubscribe from newsletter"""
+    result = await db.newsletter_subscriptions.update_one(
+        {"email": input.email},
+        {"$set": {"active": False}}
+    )
+    
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="Email not found in subscriptions")
+    
+    return {"message": "Successfully unsubscribed"}
+
+
 # Include the router in the main app
 app.include_router(api_router)
 
