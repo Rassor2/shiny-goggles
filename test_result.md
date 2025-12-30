@@ -116,6 +116,9 @@ backend:
       - working: true
         agent: "main"
         comment: "Basic health check endpoint working"
+      - working: true
+        agent: "testing"
+        comment: "✅ GET /api/ health check endpoint working correctly, returns proper JSON response with message field."
 
   - task: "Contact form submission API"
     implemented: true
