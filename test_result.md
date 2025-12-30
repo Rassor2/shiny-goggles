@@ -329,13 +329,10 @@ metadata:
   run_ui: true
 
 test_plan:
-  current_focus:
-    - "Homepage with hero, stats, featured articles, categories, newsletter"
-    - "Article pages with full content"
-    - "Contact page with form"
+  current_focus: []
   stuck_tasks: []
-  test_all: false
-  test_priority: "high_first"
+  test_all: true
+  test_priority: "completed"
 
 agent_communication:
   - agent: "main"
