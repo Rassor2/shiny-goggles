@@ -303,8 +303,6 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Contact form submission API"
-    - "Newsletter subscription API"
     - "Homepage with hero, stats, featured articles, categories, newsletter"
     - "Article pages with full content"
     - "Contact page with form"
