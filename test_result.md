@@ -150,6 +150,42 @@ backend:
         agent: "testing"
         comment: "Comprehensive testing completed: ✅ Valid email subscriptions work correctly with MongoDB storage ✅ Duplicate subscription handling working (returns 400 error with proper message) ✅ Email validation working (rejects invalid emails with 422) ✅ Unsubscribe functionality working (sets active=false) ✅ Unsubscribe handles non-existent emails correctly (404 error). All newsletter functionality working perfectly."
 
+  - task: "Newsletter unsubscribe API"
+    implemented: true
+    working: true
+    file: "server.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ POST /api/newsletter/unsubscribe endpoint working correctly: handles valid unsubscriptions, returns proper 404 for non-existent emails."
+
+  - task: "Status check API endpoints"
+    implemented: true
+    working: true
+    file: "server.py"
+    stuck_count: 0
+    priority: "low"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ Both POST /api/status (create status check) and GET /api/status (retrieve status checks) working correctly with proper MongoDB storage and retrieval."
+
+  - task: "Admin contact messages API"
+    implemented: true
+    working: true
+    file: "server.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ GET /api/contact endpoint working correctly, returns all stored contact messages in proper JSON format."
+
 frontend:
   - task: "Homepage with hero, stats, featured articles, categories, newsletter"
     implemented: true
