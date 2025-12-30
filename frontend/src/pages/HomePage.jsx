@@ -316,16 +316,38 @@ const HomePage = () => {
             <p className="text-green-100 mb-8">
               Join our newsletter for the latest advice on reducing your energy bills and making your home more efficient.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto">
-              <input 
-                type="email" 
-                placeholder="Enter your email" 
-                className="flex-1 px-4 py-3 rounded-lg border-0 focus:ring-2 focus:ring-green-400 text-gray-900"
-              />
-              <Button className="bg-amber-500 hover:bg-amber-600 text-white px-6 py-3 h-auto">
-                Subscribe
-              </Button>
-            </div>
+            {subscribeStatus === 'success' ? (
+              <div className="flex items-center justify-center gap-2 text-white">
+                <CheckCircle className="w-5 h-5" />
+                <span>{subscribeMessage}</span>
+              </div>
+            ) : (
+              <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto">
+                <input 
+                  type="email" 
+                  placeholder="Enter your email" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  disabled={subscribeStatus === 'loading'}
+                  className="flex-1 px-4 py-3 rounded-lg border-0 focus:ring-2 focus:ring-green-400 text-gray-900"
+                />
+                <Button 
+                  type="submit"
+                  className="bg-amber-500 hover:bg-amber-600 text-white px-6 py-3 h-auto"
+                  disabled={subscribeStatus === 'loading'}
+                >
+                  {subscribeStatus === 'loading' ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    'Subscribe'
+                  )}
+                </Button>
+              </form>
+            )}
+            {subscribeStatus === 'error' && (
+              <p className="text-red-200 text-sm mt-3">{subscribeMessage}</p>
+            )}
             <p className="text-green-200 text-xs mt-4">
               No spam, unsubscribe anytime. Read our Privacy Policy.
             </p>
