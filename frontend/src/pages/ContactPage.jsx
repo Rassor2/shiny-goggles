@@ -86,6 +86,11 @@ const ContactPage = () => {
                     </div>
                   ) : (
                     <form onSubmit={handleSubmit} className="space-y-6">
+                      {error && (
+                        <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+                          {error}
+                        </div>
+                      )}
                       <div className="grid md:grid-cols-2 gap-6">
                         <div className="space-y-2">
                           <Label htmlFor="name">Your Name</Label>
@@ -96,6 +101,7 @@ const ContactPage = () => {
                             onChange={handleChange}
                             placeholder="John Doe"
                             required
+                            disabled={loading}
                           />
                         </div>
                         <div className="space-y-2">
@@ -108,6 +114,7 @@ const ContactPage = () => {
                             onChange={handleChange}
                             placeholder="john@example.com"
                             required
+                            disabled={loading}
                           />
                         </div>
                       </div>
@@ -120,6 +127,7 @@ const ContactPage = () => {
                           onChange={handleChange}
                           placeholder="What is your question about?"
                           required
+                          disabled={loading}
                         />
                       </div>
                       <div className="space-y-2">
@@ -132,11 +140,25 @@ const ContactPage = () => {
                           placeholder="Tell us more about your question or feedback..."
                           rows={6}
                           required
+                          disabled={loading}
                         />
                       </div>
-                      <Button type="submit" className="bg-green-700 hover:bg-green-800 w-full md:w-auto">
-                        <Send className="w-4 h-4 mr-2" />
-                        Send Message
+                      <Button 
+                        type="submit" 
+                        className="bg-green-700 hover:bg-green-800 w-full md:w-auto"
+                        disabled={loading}
+                      >
+                        {loading ? (
+                          <>
+                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            Sending...
+                          </>
+                        ) : (
+                          <>
+                            <Send className="w-4 h-4 mr-2" />
+                            Send Message
+                          </>
+                        )}
                       </Button>
                     </form>
                   )}
