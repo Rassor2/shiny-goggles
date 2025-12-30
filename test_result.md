@@ -288,6 +288,9 @@ frontend:
       - working: true
         agent: "main"
         comment: "Complete terms of service content"
+      - working: true
+        agent: "testing"
+        comment: "✅ Terms of Service page working: Page loads correctly with proper content, accessible via direct URL and footer links. Legal content displays properly."
 
   - task: "Header with navigation"
     implemented: true
